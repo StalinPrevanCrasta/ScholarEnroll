@@ -28,7 +28,17 @@ app.post('/register', async (req, res) => {
         res.status(500).send('Error registering student');
     }
 });
-
+app.get('/students', async (req, res) => {
+    try {
+        const database = client.db('StudentDatabase');
+        const collection = database.collection('Student');
+        const students = await collection.find({}).toArray();
+        res.status(200).json(students);
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Error fetching students');
+    }
+});
 const PORT = 3000;
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
